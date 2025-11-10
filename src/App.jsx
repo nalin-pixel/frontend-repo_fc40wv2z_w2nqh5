@@ -26,7 +26,16 @@ const bannerImages = [
   'https://images.unsplash.com/photo-1544739313-6fad225fcfcb?q=80&w=1600&auto=format&fit=crop',
 ]
 
-const mockProducts = Array.from({ length: 30 }).map((_, i) => ({
+const bestSellerProducts = [
+  { id: 1, name: 'Mobile Legends', developer: 'Moonton', image: 'https://images.unsplash.com/photo-1761395013890-49090392ff0f?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxNb2JpbGUlMjBMZWdlbmRzfGVufDB8MHx8fDE3NjI3OTc4MTB8MA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80' },
+  { id: 2, name: 'Free Fire', developer: 'Garena', image: 'https://images.unsplash.com/photo-1761395013890-49090392ff0f?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxNb2JpbGUlMjBMZWdlbmRzfGVufDB8MHx8fDE3NjI3OTc4MTB8MA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80' },
+  { id: 3, name: 'PUBG Mobile', developer: 'Tencent', image: 'https://images.unsplash.com/photo-1761395013890-49090392ff0f?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxNb2JpbGUlMjBMZWdlbmRzfGVufDB8MHx8fDE3NjI3OTc4MTB8MA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80' },
+  { id: 4, name: 'Genshin Impact', developer: 'miHoYo', image: 'https://images.unsplash.com/photo-1761395013890-49090392ff0f?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxNb2JpbGUlMjBMZWdlbmRzfGVufDB8MHx8fDE3NjI3OTc4MTB8MA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80' },
+  { id: 5, name: 'Valorant', developer: 'Riot Games', image: 'https://images.unsplash.com/photo-1761395013890-49090392ff0f?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxNb2JpbGUlMjBMZWdlbmRzfGVufDB8MHx8fDE3NjI3OTc4MTB8MA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80' },
+  { id: 6, name: 'Call of Duty', developer: 'Activision', image: 'https://images.unsplash.com/photo-1761395013890-49090392ff0f?ixid=M3w3OTkxMTl8MHwxfHNlYXJjaHwxfHxNb2JpbGUlMjBMZWdlbmRzfGVufDB8MHx8fDE3NjI3OTc4MTB8MA&ixlib=rb-4.1.0&w=1600&auto=format&fit=crop&q=80' },
+]
+
+const mockProducts = Array.from({ length: 36 }).map((_, i) => ({
   id: i + 1,
   name: `Game ${i + 1}`,
   developer: ['Garena', 'Moonton', 'Tencent', 'EA', 'Ubisoft'][i % 5],
@@ -34,8 +43,19 @@ const mockProducts = Array.from({ length: 30 }).map((_, i) => ({
   logo: `https://api.iconify.design/mdi:gamepad-circle.svg?color=white`,
 }))
 
+function useEsc(handler) {
+  useEffect(() => {
+    const fn = (e) => {
+      if (e.key === 'Escape') handler()
+    }
+    window.addEventListener('keydown', fn)
+    return () => window.removeEventListener('keydown', fn)
+  }, [handler])
+}
+
 function Header({ onOpenMenu, onToggleSearch, searching, language, setLanguage }) {
   const [langOpen, setLangOpen] = useState(false)
+  useEsc(() => setLangOpen(false))
 
   return (
     <header className="sticky top-0 z-50 bg-slate-950/70 backdrop-blur border-b border-slate-800">
@@ -46,7 +66,7 @@ function Header({ onOpenMenu, onToggleSearch, searching, language, setLanguage }
           <span className="font-extrabold text-lg tracking-wide text-white">VECHNOST</span>
         </div>
 
-        {/* Search toggle & field (mobile-first) */}
+        {/* Right actions */}
         <div className="ml-auto flex items-center gap-2">
           <button aria-label="Search" onClick={onToggleSearch} className="p-2 rounded-lg hover:bg-slate-800 active:scale-95 transition text-slate-200">
             <Search className="h-5 w-5" />
@@ -54,7 +74,7 @@ function Header({ onOpenMenu, onToggleSearch, searching, language, setLanguage }
 
           {/* Language selector */}
           <div className="relative">
-            <button onClick={() => setLangOpen((v) => !v)} className="flex items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-slate-800 text-slate-200">
+            <button aria-label="Language" onClick={() => setLangOpen((v) => !v)} className="flex items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-slate-800 text-slate-200">
               <Globe className="h-5 w-5" />
               <span className="text-sm hidden sm:block">{language.name}</span>
               <span className="text-base">{language.flag}</span>
@@ -82,7 +102,7 @@ function Header({ onOpenMenu, onToggleSearch, searching, language, setLanguage }
           <div className="max-w-6xl mx-auto">
             <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2">
               <Search className="h-5 w-5 text-slate-400" />
-              <input className="bg-transparent outline-none w-full text-sm text-slate-100 placeholder:text-slate-500" placeholder="Cari game, akun, atau jasa joki..." />
+              <input className="bg-transparent outline-none w-full text-sm text-slate-100 placeholder:text-slate-500" placeholder="Cari game..." />
             </div>
           </div>
         </div>
@@ -92,6 +112,7 @@ function Header({ onOpenMenu, onToggleSearch, searching, language, setLanguage }
 }
 
 function Drawer({ open, onClose }) {
+  useEsc(() => open && onClose())
   if (!open) return null
   return (
     <div className="fixed inset-0 z-50">
@@ -127,7 +148,7 @@ function AutoSlider() {
     return () => clearInterval(id)
   }, [])
   return (
-    <div className="relative w-full aspect-[16/7] overflow-hidden rounded-2xl border border-slate-800">
+    <div className="relative w-full h-48 sm:h-80 overflow-hidden rounded-2xl border border-slate-800">
       {bannerImages.map((src, i) => (
         <img
           key={src}
@@ -146,21 +167,22 @@ function AutoSlider() {
   )
 }
 
-function BestSellerGrid() {
-  const items = mockProducts.slice(0, 6)
+function BestSellerRow() {
+  const items = bestSellerProducts
   return (
     <section className="mt-6">
       <div className="flex items-center gap-2 mb-3">
         <Flame className="h-5 w-5 text-orange-400" />
         <h2 className="font-bold text-slate-100 tracking-wide">BEST SELLER</h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+      <div className="flex gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory">
         {items.map((p) => (
-          <div key={p.id} className="flex items-center gap-3 p-3 bg-slate-900/70 backdrop-blur rounded-2xl border border-slate-800 shadow-sm hover:border-sky-700 transition">
-            <img src={p.image} alt={p.name} className="h-16 w-24 object-cover rounded-xl" />
-            <div>
-              <div className="font-semibold leading-tight text-white">{p.name}</div>
-              <div className="text-xs text-slate-400">{p.developer}</div>
+          <div key={p.id} className="snap-start shrink-0 w-[85%] xs:w-[70%] sm:w-[45%] md:w-[32%] flex items-center gap-3 p-3 bg-slate-900/70 backdrop-blur rounded-2xl border border-slate-800 shadow-sm hover:border-sky-700 transition">
+            <img src={p.image} alt={p.name} className="h-16 w-16 object-cover rounded-xl" />
+            <div className="min-w-0">
+              <div className="font-semibold leading-tight text-white truncate">{p.name}</div>
+              <div className="text-xs text-slate-400 truncate">{p.developer}</div>
             </div>
           </div>
         ))}
@@ -200,7 +222,7 @@ function Catalog() {
         <button aria-label="Next" onClick={() => setTabIndex((i) => (i + 1) % TABS.length)} className="p-2 rounded-lg hover:bg-slate-800 text-slate-200"><ChevronRight className="h-5 w-5" /></button>
       </div>
 
-      <div className="mt-4 grid grid-cols-3 gap-3">
+      <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
         {shown.map((p) => (
           <div key={p.id} className="group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-sky-700 transition">
             <img src={p.image} alt={p.name} className="h-28 w-full object-cover transition duration-300 group-hover:blur-[2px]" />
@@ -216,7 +238,7 @@ function Catalog() {
 
       {shown.length < data.length && (
         <div className="mt-4 text-center">
-          <button onClick={() => setLimitRows((r) => r + 3)} className="px-4 py-2 rounded-full bg-gradient-to-r from-sky-600 to-blue-600 text-white text-sm font-semibold hover:from-sky-500 hover:to-blue-500 shadow-lg shadow-sky-900/30">Load More...</button>
+          <button onClick={() => setLimitRows((r) => r + 2)} className="px-4 py-2 rounded-full bg-gradient-to-r from-sky-600 to-blue-600 text-white text-sm font-semibold hover:from-sky-500 hover:to-blue-500 shadow-lg shadow-sky-900/30">Load More...</button>
         </div>
       )}
     </section>
@@ -240,7 +262,7 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm">
         <div>
           <div className="font-semibold mb-2 text-white">Tentang VECHNOST</div>
-          <p className="text-slate-400">Platform topup, penjualan akun, dan jasa joki game favorit Anda. Harga kompetitif, proses cepat, dan layanan CS responsif.</p>
+          <p className="text-slate-400">VECHNOST adalah layanan topup, account, dan joki game cepat, aman, serta terpercaya.</p>
         </div>
         <div>
           <div className="font-semibold mb-2 text-white">Menu</div>
@@ -279,6 +301,9 @@ export default function App() {
   const [searching, setSearching] = useState(false)
   const [language, setLanguage] = useState(LANGS[0])
 
+  // Close search on ESC
+  useEsc(() => setSearching(false))
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100">
       <Header
@@ -291,7 +316,7 @@ export default function App() {
 
       <main className="max-w-6xl mx-auto px-4">
         <div className="mt-6"><AutoSlider /></div>
-        <BestSellerGrid />
+        <BestSellerRow />
         <Catalog />
         <LogoBanner />
       </main>

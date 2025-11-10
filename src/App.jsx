@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Menu, Search, Globe, Home, Receipt, Tag, Users, Trophy, LogIn, UserPlus, Flame, ChevronLeft, ChevronRight, Languages, Headphones } from 'lucide-react'
-import Spline from '@splinetool/react-spline'
 
 const NAV_ITEMS = [
   { label: 'Home', icon: Home },
@@ -118,19 +117,6 @@ function Drawer({ open, onClose }) {
         </nav>
       </div>
     </div>
-  )
-}
-
-function HeroSpline() {
-  return (
-    <section className="relative h-[280px] sm:h-[360px] overflow-hidden">
-      <Spline scene="https://prod.spline.design/OIGfFUmCnZ3VD8gH/scene.splinecode" style={{ width: '100%', height: '100%' }} />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-3 text-center">
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow-lg">VECHNOST</h1>
-        <p className="text-sm text-slate-300">Topup Games • Account • Joki — cepat, aman, terpercaya</p>
-      </div>
-    </section>
   )
 }
 
@@ -304,7 +290,6 @@ export default function App() {
       />
 
       <main className="max-w-6xl mx-auto px-4">
-        <HeroSpline />
         <div className="mt-6"><AutoSlider /></div>
         <BestSellerGrid />
         <Catalog />
